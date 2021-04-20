@@ -1,7 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import { useState } from "react";
+import BudgetCategories from "./components/BudgetCategories";
+import "./App.css";
 
 function App() {
+  const [budgetCategories, setBudgetCategories] = useState([
+    { Name: "", Budget: "" },
+  ]);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -9,14 +15,23 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <BudgetCategories
+          budgetCategories={budgetCategories}
+          onChange={(input, index, property) => {
+            const newState = [...budgetCategories];
+            newState[index][property] = input;
+
+            if (newState[newState.length - 1].Name)
+              newState.push({ Name: "", Budget: 0 });
+
+            setBudgetCategories(newState);
+          }}
+          remove={(i) =>
+            setBudgetCategories(
+              [...budgetCategories].filter((category, index) => index !== i)
+            )
+          }
+        />
       </header>
     </div>
   );
